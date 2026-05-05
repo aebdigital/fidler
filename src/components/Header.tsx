@@ -20,9 +20,6 @@ export function Header() {
             <Link href="/" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname === "/" ? "underline" : ""}`}>Domov</Link>
             <Link href="/sluzby/pozinok" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/sluzby") ? "underline" : ""}`}>Služby</Link>
             <Link href="/referencie" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/referencie") ? "underline" : ""}`}>Referencie</Link>
-            {pathname === "/" && (
-              <Link href="/#onas" className="transition-all hover:underline underline-offset-8 decoration-2">O nás</Link>
-            )}
           </nav>
           <Link
             href="/kontakt"
