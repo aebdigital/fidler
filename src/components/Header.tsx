@@ -17,9 +17,18 @@ export function Header() {
 
         <div className="flex items-center justify-end gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm font-black uppercase tracking-widest text-zinc-950">
-            <Link href="/" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname === "/" ? "underline" : ""}`}>Domov</Link>
-            <Link href="/sluzby/pozinok" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/sluzby") ? "underline" : ""}`}>Služby</Link>
-            <Link href="/referencie" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/referencie") ? "underline" : ""}`}>Referencie</Link>
+            <Link href="/" className="group relative py-1">
+              Domov
+              <span className={`absolute left-0 -bottom-1 h-[2px] w-full bg-zinc-950 transition-transform origin-left duration-300 ease-out ${pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
+            </Link>
+            <Link href="/sluzby/pozinok" className="group relative py-1">
+              Služby
+              <span className={`absolute left-0 -bottom-1 h-[2px] w-full bg-zinc-950 transition-transform origin-left duration-300 ease-out ${pathname.startsWith("/sluzby") ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
+            </Link>
+            <Link href="/referencie" className="group relative py-1">
+              Referencie
+              <span className={`absolute left-0 -bottom-1 h-[2px] w-full bg-zinc-950 transition-transform origin-left duration-300 ease-out ${pathname.startsWith("/referencie") ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
+            </Link>
           </nav>
           <Link
             href="/kontakt"
