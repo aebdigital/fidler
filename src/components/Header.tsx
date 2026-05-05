@@ -17,6 +17,7 @@ export function Header() {
 
         <div className="flex items-center justify-end gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm font-black uppercase tracking-widest text-zinc-950">
+            <Link href="/" className="hover:text-primary transition-colors">Domov</Link>
             <Link href="/sluzby/pozinok" className="hover:text-primary transition-colors">Služby</Link>
             <Link href="/referencie" className="hover:text-primary transition-colors">Referencie</Link>
             {pathname === "/" && (
