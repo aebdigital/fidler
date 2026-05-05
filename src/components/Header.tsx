@@ -26,7 +26,7 @@ export function Header() {
           </nav>
           <Link
             href="/kontakt"
-            className="group flex items-center justify-center bg-zinc-950 px-8 py-3.5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-sm transition-all hover:bg-primary"
+            className="group flex items-center justify-center bg-zinc-950 px-8 py-3.5 text-sm font-black uppercase tracking-widest text-white shadow-sm transition-all hover:bg-primary"
           >
             <span className="hover-split-text"><span className="hover-split-text-inner" data-text="Kontakt">Kontakt</span></span>
           </Link>
