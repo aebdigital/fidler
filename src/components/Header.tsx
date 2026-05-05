@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Header() {
+  const pathname = usePathname();
   return (
     <header
       id="site-header"
@@ -15,7 +19,9 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-black uppercase tracking-widest text-zinc-950">
             <Link href="/sluzby/pozinok" className="hover:text-primary transition-colors">Služby</Link>
             <Link href="/referencie" className="hover:text-primary transition-colors">Referencie</Link>
-            <Link href="/#onas" className="hover:text-primary transition-colors">O nás</Link>
+            {pathname === "/" && (
+              <Link href="/#onas" className="hover:text-primary transition-colors">O nás</Link>
+            )}
           </nav>
           <Link
             href="/kontakt"
