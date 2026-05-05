@@ -202,10 +202,11 @@ export default function Home() {
         >
           <div className="parallax-container pointer-events-none absolute inset-0 overflow-hidden">
             <div className="parallax-target hero-parallax relative h-full w-full scale-110" data-speed="0.1">
-              <img
+              <Image
+                fill
                 src="/hero.jpg"
                 alt="Klampiarstvo Fidler"
-                className="h-full w-full object-cover"
+                className="object-cover"
               />
             </div>
           </div>
@@ -278,12 +279,13 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="reveal-on-scroll" style={{ transitionDelay: "200ms" }}>
-                  <div className="image-reveal-wrapper group aspect-[4/5] overflow-hidden rounded-[2rem] shadow-2xl">
+                  <div className="image-reveal-wrapper group aspect-[4/3] overflow-hidden shadow-2xl">
                     <div className="image-reveal-shutter" />
-                    <img
+                    <Image
+                      fill
                       src="/about.jpg"
                       alt="Skúsenosti od roku 1996"
-                      className="image-reveal-img h-full w-full object-cover"
+                      className="image-reveal-img object-cover"
                     />
                     <div className="absolute bottom-8 left-8 right-8 translate-y-4 rounded-2xl border border-zinc-100 bg-white/90 p-8 backdrop-blur-md transition-transform group-hover:translate-y-0">
                       <div className="mb-2 text-3xl font-black uppercase leading-none tracking-tighter">
@@ -326,10 +328,11 @@ export default function Home() {
                       index === 1 ? "md:mt-12" : index === 2 ? "md:mt-24" : ""
                     }`}
                   >
-                    <img
+                    <Image
+                      fill
                       src={service.image}
                       alt={service.title}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-900/40 to-transparent" />
                     <div className="relative z-10">
@@ -399,16 +402,18 @@ export default function Home() {
               <div ref={sliderRef} id="ref-slider" className="ref-slider reveal-on-scroll">
                 {references.map((item) => (
                   <article key={`${item.title}-${item.location}`} className="ref-card group">
-                    <img
+                    <Image
+                      fill
                       src={item.image}
                       alt={item.title}
-                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
                     <div className="hover-reveal-clip">
-                      <img
+                      <Image
+                        fill
                         src={item.revealImage}
                         alt=""
-                        className="h-full w-full object-cover"
+                        className="object-cover"
                       />
                     </div>
                     <div className="ref-card-overlay">
