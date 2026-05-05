@@ -39,7 +39,7 @@ export default function KontaktPage() {
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
         <div className="mx-auto w-[95vw] px-6 md:px-10">
-          <div className="max-w-6xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-100">
+          <div className="mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-100">
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-12 text-zinc-950">Kontaktujte nás</h1>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">

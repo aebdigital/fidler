@@ -17,11 +17,11 @@ export function Header() {
 
         <div className="flex items-center justify-end gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm font-black uppercase tracking-widest text-zinc-950">
-            <Link href="/" className="hover:text-primary transition-colors">Domov</Link>
-            <Link href="/sluzby/pozinok" className="hover:text-primary transition-colors">Služby</Link>
-            <Link href="/referencie" className="hover:text-primary transition-colors">Referencie</Link>
+            <Link href="/" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname === "/" ? "underline" : ""}`}>Domov</Link>
+            <Link href="/sluzby/pozinok" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/sluzby") ? "underline" : ""}`}>Služby</Link>
+            <Link href="/referencie" className={`transition-all hover:underline underline-offset-8 decoration-2 ${pathname.startsWith("/referencie") ? "underline" : ""}`}>Referencie</Link>
             {pathname === "/" && (
-              <Link href="/#onas" className="hover:text-primary transition-colors">O nás</Link>
+              <Link href="/#onas" className="transition-all hover:underline underline-offset-8 decoration-2">O nás</Link>
             )}
           </nav>
           <Link

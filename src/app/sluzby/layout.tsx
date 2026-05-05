@@ -1,7 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SubpageHero } from "../../components/SubpageHero";
 
 export default function SluzbyLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  
+  const getLinkClass = (path: string) => {
+    const isActive = pathname === path;
+    return `text-sm font-bold uppercase tracking-widest transition-all hover:underline hover:text-zinc-950 underline-offset-8 decoration-2 ${isActive ? "text-zinc-950 underline" : "text-zinc-500"}`;
+  };
+
   return (
     <>
       <SubpageHero />
@@ -12,9 +22,9 @@ export default function SluzbyLayout({ children }: { children: React.ReactNode }
               <div className="sticky top-32 p-8 rounded-none bg-white shadow-sm border border-zinc-100">
                 <h3 className="text-xl font-black uppercase mb-6 text-zinc-950 tracking-tighter">Naše služby</h3>
                 <nav className="flex flex-col gap-4">
-                  <Link href="/sluzby/pozinok" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-primary transition-colors">Pozinkované plechy</Link>
-                  <Link href="/sluzby/med" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-primary transition-colors">Medené strechy</Link>
-                  <Link href="/sluzby/titan-zinok" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-primary transition-colors">Titán-zinok</Link>
+                  <Link href="/sluzby/pozinok" className={getLinkClass("/sluzby/pozinok")}>Pozinkované plechy</Link>
+                  <Link href="/sluzby/med" className={getLinkClass("/sluzby/med")}>Medené strechy</Link>
+                  <Link href="/sluzby/titan-zinok" className={getLinkClass("/sluzby/titan-zinok")}>Titán-zinok</Link>
                 </nav>
               </div>
             </aside>

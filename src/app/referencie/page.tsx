@@ -45,7 +45,7 @@ export default function ReferenciePage() {
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
         <div className="mx-auto w-[95vw] px-6 md:px-10">
-          <div className="max-w-6xl mx-auto">
+          <div className="mx-auto">
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8 text-zinc-950">Referencie</h1>
             <p className="text-xl text-zinc-600 mb-12 max-w-3xl">
               Prezrite si ukážky našich prác rozdelené podľa použitých materiálov. Za vyše 20 rokov našej existencie sme realizovali množstvo úspešných projektov na Slovensku.
