@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
 import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
