@@ -1,10 +1,12 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ImageLightboxGallery } from "../../../components/ImageLightboxGallery";
 
 export default function PozinokPage() {
   const images = [
     { src: "/scraped/pz01v.jpg", thumb: "/scraped/pz01m.jpg", title: "garáž - Veľký Biel" },
     { src: "/scraped/pz02v.jpg", thumb: "/scraped/pz02m.jpg", title: "pasáž - Malý Františkáni" }
   ];
+  const previewImages = images.slice(0, 3);
 
   return (
     <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-100 min-h-full">
@@ -17,17 +19,14 @@ export default function PozinokPage() {
       </div>
 
       <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 text-zinc-950">Ukážky našich prác</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((img, i) => (
-          <a key={i} href={img.src} target="_blank" rel="noreferrer" className="group block overflow-hidden rounded-xl border border-zinc-100">
-            <div className="aspect-[4/3] relative overflow-hidden bg-zinc-100">
-              <Image fill src={img.thumb} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-            </div>
-            <div className="p-4 bg-white">
-              <p className="text-sm font-bold uppercase tracking-widest text-zinc-950">{img.title}</p>
-            </div>
-          </a>
-        ))}
+      <ImageLightboxGallery photos={previewImages} />
+      <div className="mt-10 flex justify-center">
+        <Link
+          href="/referencie"
+          className="inline-flex items-center justify-center bg-zinc-950 px-8 py-4 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-primary hover:text-zinc-950"
+        >
+          Viac realizácií
+        </Link>
       </div>
     </div>
   );

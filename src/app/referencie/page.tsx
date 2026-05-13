@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { SubpageHero } from "../../components/SubpageHero";
+import { ImageLightboxGallery } from "../../components/ImageLightboxGallery";
 
 const titanTitles = [
   "r.d. Tomašikovo", "r.d. Tomašikovo", 
@@ -79,32 +78,11 @@ export default function ReferenciePage() {
               </button>
             </div>
 
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              <AnimatePresence mode="popLayout">
-                {filteredPhotos.map((photo) => (
-                  <motion.a 
-                    layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
-                    key={photo.src} 
-                    href={photo.src} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="group block bg-white rounded-xl overflow-hidden shadow-sm border border-zinc-100 transition-all hover:shadow-md hover:border-zinc-200"
-                  >
-                    <div className="aspect-[4/3] relative overflow-hidden bg-zinc-100">
-                      <Image fill src={photo.thumb} alt={photo.title} className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                    </div>
-                    <div className="p-4">
-                      <p className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">{photo.title}</p>
-                      <p className="text-[10px] uppercase text-zinc-400 mt-1">{photo.category}</p>
-                    </div>
-                  </motion.a>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <ImageLightboxGallery
+              photos={filteredPhotos}
+              showCategory
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            />
 
           </div>
         </div>
