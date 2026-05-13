@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
@@ -15,7 +16,6 @@ type Service = {
 
 type Reference = {
   image: string;
-  revealImage: string;
   eyebrow: string;
   title: string;
   location: string;
@@ -58,44 +58,56 @@ const specializations = [
 
 const references: Reference[] = [
   {
-    image: "/ref1.jpg",
-    revealImage: "/ref2.jpg",
+    image: "/scraped/tz01v.jpg",
     eyebrow: "Rodinný dom",
     title: "r.d. Tomašikovo",
     location: "Tomašikovo",
   },
   {
-    image: "/ref2.jpg",
-    revealImage: "/ref3.jpg",
+    image: "/scraped/tz03v.jpg",
     eyebrow: "Polyfunkčný dom",
     title: "Polyfunkčný dom",
     location: "Žilina",
   },
   {
-    image: "/ref3.jpg",
-    revealImage: "/ref4.jpg",
+    image: "/scraped/tz05v.jpg",
     eyebrow: "Komunikačné centrum",
     title: "Central Passage",
     location: "Bratislava",
   },
   {
-    image: "/ref4.jpg",
-    revealImage: "/ref5.jpg",
+    image: "/scraped/tz12v.jpg",
     eyebrow: "Rodinný dom",
     title: "r.d. Koliba",
     location: "Bratislava",
   },
   {
-    image: "/ref5.jpg",
-    revealImage: "/ref1.jpg",
+    image: "/scraped/tz18v.jpg",
     eyebrow: "Kostol",
     title: "Kostol",
     location: "Piešťany",
   },
+  {
+    image: "/scraped/m01v.jpg",
+    eyebrow: "Medená strecha",
+    title: "Piváreň Prazdroj",
+    location: "Bratislava",
+  },
+  {
+    image: "/scraped/m03v.jpg",
+    eyebrow: "Rodinný dom",
+    title: "r.d. Buková",
+    location: "Bratislava",
+  },
+  {
+    image: "/scraped/pz01v.jpg",
+    eyebrow: "Pozinkované plechy",
+    title: "Garáž",
+    location: "Veľký Biel",
+  },
 ];
 
 export default function Home() {
-  const sliderRef = useRef<HTMLDivElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isLightboxClosing, setIsLightboxClosing] = useState(false);
@@ -193,10 +205,6 @@ export default function Home() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [lightboxIndex]);
-
-  const scrollReferences = (distance: number) => {
-    sliderRef.current?.scrollBy({ left: distance, behavior: "smooth" });
-  };
 
   const openLightbox = (index: number) => {
     if (closeTimerRef.current) {
@@ -378,7 +386,7 @@ export default function Home() {
                     Naše služby
                   </p>
                   <h2 className="break-words text-[clamp(1.8rem,7vw,6rem)] font-black uppercase leading-none text-white italic tracking-tighter">
-                    Čo robíme<span className="text-primary">.</span>
+                    Čo robíme
                   </h2>
                 </div>
                 <p className="max-w-md text-xl font-light text-white/60">
@@ -454,67 +462,52 @@ export default function Home() {
 
           <section id="realizacie" className="grain-overlay overflow-hidden bg-white py-28 md:py-48">
             <div className="relative z-10 mx-auto w-[95vw] px-6 md:px-10">
-              <div className="reveal-on-scroll mb-24 flex flex-col items-end justify-between gap-10 md:flex-row">
+              <div className="reveal-on-scroll mb-24">
                 <div>
                   <div className="divider" />
                   <h2 className="break-words text-[clamp(1.8rem,7vw,6rem)] font-black uppercase leading-none text-zinc-950 italic tracking-tighter">
-                    Realizácie<span className="text-primary italic">.</span>
+                    Realizácie
                   </h2>
                   <p className="mt-4 text-xs font-bold uppercase text-zinc-400">
                     Vybrané projekty z oblasti klampiarstva a pokrývačstva
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    onClick={() => scrollReferences(-500)}
-                    className="flex h-14 w-14 items-center justify-center rounded-full border border-zinc-200 bg-white shadow-sm transition-all hover:bg-zinc-50"
-                    aria-label="Predchádzajúce realizácie"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => scrollReferences(500)}
-                    className="flex h-14 w-14 items-center justify-center rounded-full border border-zinc-200 bg-white shadow-sm transition-all hover:bg-zinc-50"
-                    aria-label="Ďalšie realizácie"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                </div>
               </div>
 
-              <div ref={sliderRef} id="ref-slider" className="ref-slider reveal-on-scroll">
+              <div className="reveal-on-scroll grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {references.map((item) => (
-                  <article key={`${item.title}-${item.location}`} className="ref-card group">
-                    <Image
-                      fill
-                      src={item.image}
-                      alt={item.title}
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                    <div className="hover-reveal-clip">
+                  <article
+                    key={`${item.title}-${item.location}-${item.image}`}
+                    className="group relative block overflow-hidden rounded-xl border border-zinc-100 bg-zinc-950 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
                       <Image
                         fill
-                        src={item.revealImage}
-                        alt=""
-                        className="object-cover"
+                        src={item.image}
+                        alt={item.title}
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                    </div>
-                    <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-transparent" />
-                    <div className="ref-card-overlay">
-                      <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">
-                        {item.eyebrow}
-                      </p>
-                      <h3 className="text-3xl font-black uppercase italic tracking-tighter">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-sm font-light text-white/80">
-                        {item.location}
-                      </p>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">
+                          {item.eyebrow}
+                        </p>
+                        <h3 className="mt-2 text-sm font-bold uppercase tracking-widest text-white drop-shadow-lg transition-colors group-hover:text-primary">
+                          {item.title}
+                        </h3>
+                        <p className="mt-2 text-xs text-white/70">{item.location}</p>
+                      </div>
                     </div>
                   </article>
                 ))}
+              </div>
+              <div className="mt-12 flex justify-center">
+                <Link
+                  href="/referencie"
+                  className="inline-flex items-center justify-center bg-zinc-950 px-8 py-4 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-primary hover:text-zinc-950"
+                >
+                  Viac realizácií
+                </Link>
               </div>
             </div>
           </section>
