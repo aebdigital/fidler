@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect } from "react";
 
 type Service = {
   image: string;
@@ -12,6 +11,7 @@ type Service = {
   title: string;
   description: string;
   items: string[];
+  href: string;
 };
 
 type Reference = {
@@ -25,23 +25,34 @@ const services: Service[] = [
   {
     image: "/service1.jpg",
     eyebrow: "01 / Klampiarstvo",
-    title: "Klampiarske práce",
-    description: "Ohýbanie 4m profilov a montáž odvodňovacích systémov.",
-    items: ["Ohýbanie 4m profilov", "Odvodňovacie systémy", "Detailné lemovania"],
+    title: "Pozinkované plechy",
+    description: "Tradičný materiál pre strešné krytiny a klampiarske prvky.",
+    items: ["Strešné krytiny", "Odvodňovacie systémy", "Detailné lemovania"],
+    href: "/sluzby/pozinok",
   },
   {
     image: "/service2.jpg",
     eyebrow: "02 / Strechy",
-    title: "Pokrývačské práce",
-    description: "Opravy striech, hydroizolácie a montáž povlakových krytín.",
-    items: ["Opravy striech", "Hydroizolácie", "Povlakové krytiny"],
+    title: "Medené strechy",
+    description: "Prémiový materiál s charakteristickou patinou a dlhou životnosťou.",
+    items: ["Medené krytiny", "Patinovaná meď", "Klampiarske prvky"],
+    href: "/sluzby/med",
   },
   {
     image: "/service3.jpg",
     eyebrow: "03 / Systémy",
-    title: "Strešné systémy",
-    description: "Montáž drážkovej krytiny z titán-zinok, medi a hliníka.",
-    items: ["Titán-zinok", "Medené strechy", "Farebný hliník"],
+    title: "Titán-zinok",
+    description: "Montáž drážkovej krytiny z titán-zinku pre strechy a fasády.",
+    items: ["Drážková krytina", "Fasádne systémy", "Farebný titán-zinok"],
+    href: "/sluzby/titan-zinok",
+  },
+  {
+    image: "/vyroba-profilov/IMG_5018.jpg",
+    eyebrow: "04 / Výroba",
+    title: "Výroba stavebných profilov",
+    description: "Ohýbanie 4m profilov a výroba klampiarskych prvkov na mieru.",
+    items: ["Ohýbanie do 4 300 mm", "Profily na mieru", "Hrúbka do 1 mm"],
+    href: "/sluzby/vyroba-profilov",
   },
 ];
 
@@ -108,11 +119,6 @@ const references: Reference[] = [
 ];
 
 export default function Home() {
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [isLightboxClosing, setIsLightboxClosing] = useState(false);
-  const [slideDirection, setSlideDirection] = useState<"open" | "next" | "prev">("open");
-
   useEffect(() => {
 
     const header = document.getElementById("site-header");
@@ -167,90 +173,6 @@ export default function Home() {
       imageObserver.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    return () => {
-      if (closeTimerRef.current) {
-        clearTimeout(closeTimerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (lightboxIndex === null) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeLightbox();
-      }
-
-      if (event.key === "ArrowRight") {
-        showServiceSlide("next");
-      }
-
-      if (event.key === "ArrowLeft") {
-        showServiceSlide("prev");
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [lightboxIndex]);
-
-  const openLightbox = (index: number) => {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-    }
-
-    setSlideDirection("open");
-    setIsLightboxClosing(false);
-    setLightboxIndex(index);
-  };
-
-  const closeLightbox = () => {
-    if (lightboxIndex === null || isLightboxClosing) {
-      return;
-    }
-
-    setIsLightboxClosing(true);
-    closeTimerRef.current = setTimeout(() => {
-      setLightboxIndex(null);
-      setIsLightboxClosing(false);
-    }, 240);
-  };
-
-  const showServiceSlide = (direction: "next" | "prev") => {
-    setSlideDirection(direction);
-    setLightboxIndex((current) => {
-      if (current === null) {
-        return 0;
-      }
-
-      const offset = direction === "next" ? 1 : -1;
-      return (current + offset + services.length) % services.length;
-    });
-  };
-
-  const handleServiceCardKeyDown = (
-    event: ReactKeyboardEvent<HTMLElement>,
-    index: number,
-  ) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openLightbox(index);
-    }
-  };
-
-  const activeService = lightboxIndex === null ? null : services[lightboxIndex];
 
   return (
     <>
@@ -395,24 +317,21 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {services.map((service, index) => (
-                  <article
+                  <Link
                     key={service.title}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => openLightbox(index)}
-                    onKeyDown={(event) => handleServiceCardKeyDown(event, index)}
-                    className="reveal-on-scroll group relative flex min-h-[450px] cursor-pointer flex-col justify-end overflow-hidden p-10 text-left shadow-2xl outline-none ring-primary/0 transition-[box-shadow,transform] duration-500 hover:-translate-y-2 focus-visible:ring-4"
+                    href={service.href}
+                    className="reveal-on-scroll group relative flex min-h-[450px] flex-col justify-end overflow-hidden p-10 text-left shadow-2xl outline-none ring-primary/0 transition-[box-shadow,transform] duration-500 hover:-translate-y-2 focus-visible:ring-4"
                     style={{ transitionDelay: `${index * 150}ms` }}
-                    aria-label={`Otvoriť službu ${service.title}`}
+                    aria-label={`Prejsť na ${service.title}`}
                   >
                     <Image
                       fill
                       src={service.image}
                       alt={service.title}
                       className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
                       unoptimized
                     />
                     <div className="absolute inset-0 bg-black/10" />
@@ -436,7 +355,7 @@ export default function Home() {
                         ))}
                       </ul>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
 
@@ -511,97 +430,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          {activeService && (
-            <div
-              className={`lightbox-overlay ${isLightboxClosing ? "is-closing" : ""}`}
-              role="dialog"
-              aria-modal="true"
-              aria-label={activeService.title}
-              onClick={closeLightbox}
-            >
-              <button
-                type="button"
-                className="absolute right-5 top-5 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-2xl leading-none text-white backdrop-blur-md transition-colors hover:bg-white hover:text-zinc-950 md:right-8 md:top-8"
-                onClick={closeLightbox}
-                aria-label="Zavrieť lightbox"
-              >
-                ×
-              </button>
-
-              <button
-                type="button"
-                className="absolute left-4 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-zinc-950 md:left-8 md:h-14 md:w-14"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  showServiceSlide("prev");
-                }}
-                aria-label="Predchádzajúca služba"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-
-              <button
-                type="button"
-                className="absolute right-4 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-zinc-950 md:right-8 md:h-14 md:w-14"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  showServiceSlide("next");
-                }}
-                aria-label="Ďalšia služba"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-
-              <div className="lightbox-shell" onClick={(event) => event.stopPropagation()}>
-                <div
-                  key={`${activeService.title}-${lightboxIndex}-${slideDirection}`}
-                  className={`lightbox-slide lightbox-slide-${slideDirection}`}
-                >
-                  <Image
-                    fill
-                    src={activeService.image}
-                    alt={activeService.title}
-                    className="object-contain"
-                    sizes="100vw"
-                    unoptimized
-                    priority
-                  />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#061737] via-[#061737]/75 to-transparent p-6 text-white md:p-10">
-                    <p className="mb-3 text-xs font-black uppercase tracking-[0.3em] text-primary">
-                      {activeService.eyebrow}
-                    </p>
-                    <h3 className="max-w-3xl text-3xl font-black uppercase leading-none italic tracking-tighter md:text-5xl">
-                      {activeService.title}
-                    </h3>
-                    <p className="mt-4 max-w-2xl text-sm font-light leading-relaxed text-white/75 md:text-base">
-                      {activeService.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 gap-3 md:bottom-8">
-                {services.map((service, index) => (
-                  <button
-                    key={service.title}
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setSlideDirection(index > (lightboxIndex ?? 0) ? "next" : "prev");
-                      setLightboxIndex(index);
-                    }}
-                    className={`h-2.5 rounded-full transition-all ${
-                      index === lightboxIndex ? "w-10 bg-primary" : "w-2.5 bg-white/35 hover:bg-white"
-                    }`}
-                    aria-label={`Zobraziť ${service.title}`}
-                    aria-current={index === lightboxIndex}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
 
         </div>
       </main>

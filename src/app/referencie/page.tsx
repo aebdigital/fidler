@@ -1,89 +1,49 @@
-"use client";
-
-import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { SubpageHero } from "../../components/SubpageHero";
-import { ImageLightboxGallery } from "../../components/ImageLightboxGallery";
-
-const titanTitles = [
-  "r.d. Tomašikovo", "r.d. Tomašikovo", 
-  "polyfunkčný dom Žilina", "polyfunkčný dom Žilina",
-  "central passage BA", "central passage BA",
-  "sídlo firmy Belová", "sídlo firmy Belová",
-  "r.d. BA", "r.d. BA", "r.d. BA", "r.d. Koliba",
-  "r.d. Koliba", "r.d. Koliba", "garáž BA", "kostol Koniarovce",
-  "kostol Koniarovce", "kostol Piešťany", "kostol Piešťany",
-  "komunikačné centrum Prievidza", "komunikačné centrum Prievidza"
-];
-
-const allPhotos = [
-  { category: "pozinok", src: "/scraped/pz01v.jpg", thumb: "/scraped/pz01m.jpg", title: "garáž - Veľký Biel" },
-  { category: "pozinok", src: "/scraped/pz02v.jpg", thumb: "/scraped/pz02m.jpg", title: "pasáž - Malý Františkáni" },
-  { category: "med", src: "/scraped/m01v.jpg", thumb: "/scraped/m01m.jpg", title: "piváreň Prazdroj BA" },
-  { category: "med", src: "/scraped/m02v.jpg", thumb: "/scraped/m02m.jpg", title: "piváreň Prazdroj BA" },
-  { category: "med", src: "/scraped/m03v.jpg", thumb: "/scraped/m03m.jpg", title: "r.d. Buková BA" },
-  { category: "med", src: "/scraped/m04v.jpg", thumb: "/scraped/m04m.jpg", title: "r.d. Buková BA" },
-  ...Array.from({ length: 21 }, (_, i) => {
-    const num = (i + 1).toString().padStart(2, '0');
-    return {
-      category: "titan",
-      src: `/scraped/tz${num}v.jpg`,
-      thumb: `/scraped/tz${num}m.jpg`,
-      title: titanTitles[i] || `Práca ${num}`
-    };
-  })
-];
+import { photoUrl, projects } from "../../data/projekty";
 
 export default function ReferenciePage() {
-  const [filter, setFilter] = useState("all");
-
-  const filteredPhotos = allPhotos.filter(
-    (photo) => filter === "all" || photo.category === filter
-  );
-
   return (
     <>
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
         <div className="mx-auto w-[95vw] px-6 md:px-10">
           <div className="mx-auto">
-            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8 text-zinc-950">Referencie</h1>
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8 text-zinc-950">
+              Referencie
+            </h1>
             <p className="text-xl text-zinc-600 mb-12 max-w-3xl">
               Prezrite si ukážky našich prác rozdelené podľa použitých materiálov. Za vyše 20 rokov našej existencie sme realizovali množstvo úspešných projektov na Slovensku.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-12">
-              <button
-                onClick={() => setFilter("all")}
-                className={`px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-xl transition-all ${filter === "all" ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"}`}
-              >
-                Všetky
-              </button>
-              <button
-                onClick={() => setFilter("pozinok")}
-                className={`px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-xl transition-all ${filter === "pozinok" ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"}`}
-              >
-                Pozinok
-              </button>
-              <button
-                onClick={() => setFilter("med")}
-                className={`px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-xl transition-all ${filter === "med" ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"}`}
-              >
-                Meď
-              </button>
-              <button
-                onClick={() => setFilter("titan")}
-                className={`px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-xl transition-all ${filter === "titan" ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"}`}
-              >
-                Titán-zinok
-              </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {projects.map((project) => (
+                <Link
+                  key={project.slug}
+                  href={`/referencie/${project.slug}`}
+                  className="group relative block overflow-hidden border border-zinc-100 bg-zinc-950 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary"
+                  aria-label={`Otvoriť projekt ${project.title}`}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
+                    <Image
+                      fill
+                      src={photoUrl(project.folder, project.photos[0])}
+                      alt={project.title}
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-xl md:text-2xl font-black uppercase italic tracking-tight text-white leading-tight drop-shadow-lg group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
-
-            <ImageLightboxGallery
-              photos={filteredPhotos}
-              showCategory
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            />
-
           </div>
         </div>
       </div>

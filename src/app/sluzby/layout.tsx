@@ -25,6 +25,7 @@ export default function SluzbyLayout({ children }: { children: React.ReactNode }
                   <Link href="/sluzby/pozinok" className={getLinkClass("/sluzby/pozinok")}>Pozinkované plechy</Link>
                   <Link href="/sluzby/med" className={getLinkClass("/sluzby/med")}>Medené strechy</Link>
                   <Link href="/sluzby/titan-zinok" className={getLinkClass("/sluzby/titan-zinok")}>Titán-zinok</Link>
+                  <Link href="/sluzby/vyroba-profilov" className={getLinkClass("/sluzby/vyroba-profilov")}>Výroba stavebných profilov</Link>
                 </nav>
               </div>
             </aside>
