@@ -1,11 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import { SubpageHero } from "../../components/SubpageHero";
+
+const locationImages = [
+  { src: "/scraped/pred_v.jpg", thumb: "/scraped/pred_m.jpg", title: "Predajňa" },
+  { src: "/scraped/mapa_v.jpg", thumb: "/scraped/mapa_m.jpg", title: "Areál" },
+];
 
 export default function KontaktPage() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxIndex(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [lightboxIndex]);
+
+  const activeImage = lightboxIndex === null ? null : locationImages[lightboxIndex];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +62,7 @@ export default function KontaktPage() {
     <>
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
-        <div className="mx-auto w-[95vw] px-6 md:px-10">
+        <div className="mx-auto w-[90vw] md:w-[95vw] md:px-10">
           <div className="mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-100">
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-12 text-zinc-950">Kontaktujte nás</h1>
             
@@ -72,18 +96,25 @@ export default function KontaktPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="bg-zinc-50 p-6 rounded-xl border border-zinc-100">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-4">Predajňa</h3>
-                    <a href="/scraped/pred_v.jpg" target="_blank" rel="noreferrer" className="block relative aspect-video w-full">
-                      <Image fill src="/scraped/pred_m.jpg" alt="Predajňa" className="object-cover rounded-lg shadow-sm hover:opacity-90 transition-opacity" />
-                    </a>
-                  </div>
-                  <div className="bg-zinc-50 p-6 rounded-xl border border-zinc-100">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-4">Areál</h3>
-                    <a href="/scraped/mapa_v.jpg" target="_blank" rel="noreferrer" className="block relative aspect-video w-full">
-                      <Image fill src="/scraped/mapa_m.jpg" alt="Mapa areálu" className="object-cover rounded-lg shadow-sm hover:opacity-90 transition-opacity" />
-                    </a>
-                  </div>
+                  {locationImages.map((image, index) => (
+                    <div key={image.src} className="bg-zinc-50 p-6 rounded-xl border border-zinc-100">
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-4">{image.title}</h3>
+                      <button
+                        type="button"
+                        onClick={() => setLightboxIndex(index)}
+                        className="group block relative aspect-video w-full overflow-hidden rounded-lg shadow-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary"
+                        aria-label={`Zobraziť ${image.title}`}
+                      >
+                        <Image
+                          fill
+                          src={image.thumb}
+                          alt={image.title}
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(min-width: 1024px) 25vw, 50vw"
+                        />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -136,6 +167,56 @@ export default function KontaktPage() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {activeImage && (
+          <motion.div
+            key="kontakt-lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={activeImage.title}
+            onClick={() => setLightboxIndex(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 md:p-12"
+          >
+            <button
+              type="button"
+              onClick={() => setLightboxIndex(null)}
+              aria-label="Zavrieť"
+              className="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-zinc-950 md:right-8 md:top-8"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <motion.div
+              key={activeImage.src}
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.22 }}
+              className="relative w-full max-w-5xl aspect-[4/3]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                fill
+                src={activeImage.src}
+                alt={activeImage.title}
+                className="object-contain"
+                sizes="100vw"
+                priority
+                unoptimized
+              />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8">
+                <p className="text-xl md:text-3xl font-black uppercase italic tracking-tighter text-white">
+                  {activeImage.title}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

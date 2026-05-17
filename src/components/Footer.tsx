@@ -15,7 +15,7 @@ export function Footer() {
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/90 to-zinc-950" />
       </div>
       <div className="relative z-10">
-        <div className="mx-auto w-[95vw] pt-32 pb-16 text-center">
+        <div className="mx-auto w-[90vw] md:w-[95vw] pt-32 pb-16 text-center">
           <div className="fade-up fade-up-1">
             <h2 className="mb-6 text-4xl font-black uppercase text-white tracking-tighter md:text-5xl">
               Máte záujem o spoluprácu?<span className="text-primary">.</span>
@@ -40,7 +40,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mx-auto w-[95vw] pb-12 pt-8">
+        <div className="mx-auto w-[90vw] md:w-[95vw] pb-12 pt-8">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
             <div>
               <span className="logo-text footer-logo mb-6 block">Klampiarstvo Fidler</span>

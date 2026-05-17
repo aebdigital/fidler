@@ -35,7 +35,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     <>
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
-        <div className="mx-auto w-[95vw] px-6 md:px-10">
+        <div className="mx-auto w-[90vw] md:w-[95vw] md:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             <aside className="lg:col-span-4 lg:sticky lg:top-32">
               <Link

@@ -16,7 +16,7 @@ export default function SluzbyLayout({ children }: { children: React.ReactNode }
     <>
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
-        <div className="mx-auto w-[95vw] px-6 md:px-10">
+        <div className="mx-auto w-[90vw] md:w-[95vw] md:px-10">
           <div className="flex flex-col md:flex-row gap-12">
             <aside className="w-full md:w-1/4">
               <div className="sticky top-32 p-8 rounded-none bg-white shadow-sm border border-zinc-100">

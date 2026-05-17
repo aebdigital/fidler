@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useEffect } from "react";
+import { photoUrl, projects } from "../data/projekty";
 
 type Service = {
   image: string;
@@ -12,13 +13,6 @@ type Service = {
   description: string;
   items: string[];
   href: string;
-};
-
-type Reference = {
-  image: string;
-  eyebrow: string;
-  title: string;
-  location: string;
 };
 
 const services: Service[] = [
@@ -67,56 +61,7 @@ const specializations = [
   "Opravy striech",
 ];
 
-const references: Reference[] = [
-  {
-    image: "/scraped/tz01v.jpg",
-    eyebrow: "Rodinný dom",
-    title: "r.d. Tomašikovo",
-    location: "Tomašikovo",
-  },
-  {
-    image: "/scraped/tz03v.jpg",
-    eyebrow: "Polyfunkčný dom",
-    title: "Polyfunkčný dom",
-    location: "Žilina",
-  },
-  {
-    image: "/scraped/tz05v.jpg",
-    eyebrow: "Komunikačné centrum",
-    title: "Central Passage",
-    location: "Bratislava",
-  },
-  {
-    image: "/scraped/tz12v.jpg",
-    eyebrow: "Rodinný dom",
-    title: "r.d. Koliba",
-    location: "Bratislava",
-  },
-  {
-    image: "/scraped/tz18v.jpg",
-    eyebrow: "Kostol",
-    title: "Kostol",
-    location: "Piešťany",
-  },
-  {
-    image: "/scraped/m01v.jpg",
-    eyebrow: "Medená strecha",
-    title: "Piváreň Prazdroj",
-    location: "Bratislava",
-  },
-  {
-    image: "/scraped/m03v.jpg",
-    eyebrow: "Rodinný dom",
-    title: "r.d. Buková",
-    location: "Bratislava",
-  },
-  {
-    image: "/scraped/pz01v.jpg",
-    eyebrow: "Pozinkované plechy",
-    title: "Garáž",
-    location: "Veľký Biel",
-  },
-];
+const featuredProjects = projects.slice(0, 8);
 
 export default function Home() {
   useEffect(() => {
@@ -195,7 +140,7 @@ export default function Home() {
           </div>
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
-          <div className="relative z-10 mx-auto w-[95vw] px-6 md:px-10">
+          <div className="relative z-10 mx-auto w-[90vw] md:w-[95vw] md:px-10">
             <div className="flex translate-y-12 flex-col items-start">
               <div className="fade-up mb-10 inline-flex items-center gap-4 rounded-full bg-primary px-6 py-2.5 shadow-lg">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-zinc-950" />
@@ -233,7 +178,7 @@ export default function Home() {
             id="onas"
             className="grain-overlay relative overflow-hidden bg-white py-28 text-zinc-950 md:py-48"
           >
-            <div className="relative z-10 mx-auto w-[95vw] px-6 md:px-10">
+            <div className="relative z-10 mx-auto w-[90vw] md:w-[95vw] md:px-10">
               <div className="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
                 <div className="reveal-on-scroll">
                   <div className="divider" />
@@ -301,7 +246,7 @@ export default function Home() {
               className="absolute inset-0 z-0 opacity-20 invert"
               style={{ backgroundImage: "url('/texture.svg')", backgroundSize: "cover" }}
             />
-            <div className="relative z-10 mx-auto w-[95vw] px-6 md:px-10">
+            <div className="relative z-10 mx-auto w-[90vw] md:w-[95vw] md:px-10">
               <div className="reveal-on-scroll mb-20 flex flex-col justify-between gap-8 md:flex-row md:items-end">
                 <div>
                   <p className="mb-6 text-xs font-black uppercase tracking-[0.3em] text-primary">
@@ -380,7 +325,7 @@ export default function Home() {
           </section>
 
           <section id="realizacie" className="grain-overlay overflow-hidden bg-white py-28 md:py-48">
-            <div className="relative z-10 mx-auto w-[95vw] px-6 md:px-10">
+            <div className="relative z-10 mx-auto w-[90vw] md:w-[95vw] md:px-10">
               <div className="reveal-on-scroll mb-24">
                 <div>
                   <div className="divider" />
@@ -394,30 +339,30 @@ export default function Home() {
               </div>
 
               <div className="reveal-on-scroll grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {references.map((item) => (
-                  <article
-                    key={`${item.title}-${item.location}-${item.image}`}
-                    className="group relative block overflow-hidden rounded-xl border border-zinc-100 bg-zinc-950 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md"
+                {featuredProjects.map((project) => (
+                  <Link
+                    key={project.slug}
+                    href={`/referencie/${project.slug}`}
+                    className="group relative block overflow-hidden border border-zinc-100 bg-zinc-950 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md"
+                    aria-label={`Otvoriť projekt ${project.title}`}
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
                       <Image
                         fill
-                        src={item.image}
-                        alt={item.title}
+                        src={photoUrl(project.folder, project.photos[0])}
+                        alt={project.title}
+                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        unoptimized
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-5">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">
-                          {item.eyebrow}
-                        </p>
-                        <h3 className="mt-2 text-sm font-bold uppercase tracking-widest text-white drop-shadow-lg transition-colors group-hover:text-primary">
-                          {item.title}
+                        <h3 className="text-base md:text-lg font-black uppercase italic tracking-tight text-white leading-tight drop-shadow-lg group-hover:text-primary transition-colors">
+                          {project.title}
                         </h3>
-                        <p className="mt-2 text-xs text-white/70">{item.location}</p>
                       </div>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
               <div className="mt-12 flex justify-center">

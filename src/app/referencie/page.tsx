@@ -8,7 +8,7 @@ export default function ReferenciePage() {
     <>
       <SubpageHero />
       <div className="pt-16 pb-24 bg-zinc-50 min-h-screen">
-        <div className="mx-auto w-[95vw] px-6 md:px-10">
+        <div className="mx-auto w-[90vw] md:w-[95vw] md:px-10">
           <div className="mx-auto">
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8 text-zinc-950">
               Referencie
